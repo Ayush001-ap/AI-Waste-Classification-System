@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WasteWise AI - Smart Waste Classification</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-theme">
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-card">
+            <div class="auth-intro">
+                <div class="brand-icon auth-brand"><i class="fas fa-recycle"></i></div>
+                <h1 id="authBrandTitle">WasteWise AI</h1>
+                <p id="authSubtitle">Secure login to access waste classification dashboard.</p>
+                <div class="auth-highlights">
+                    <span>Secure access</span>
+                    <span>Fast insights</span>
+                    <span>AI recycling help</span>
+                </div>
+            </div>
+            <form class="auth-form" id="authForm" onsubmit="submitAuthForm(event)">
+                <div class="form-header">
+                    <h2 id="authHeading">Sign in to continue</h2>
+                    <p id="authDescription">Enter your credentials to access the WasteWise dashboard.</p>
+                </div>
+                <div class="form-group">
+                    <label for="authEmail" id="authEmailLabel">Email</label>
+                    <input type="email" id="authEmail" autocomplete="email" required>
+                </div>
+                <div class="form-group signup-only" id="signupNameGroup">
+                    <label for="authName" id="authNameLabel">Full Name</label>
+                    <input type="text" id="authName" autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="authPassword" id="authPasswordLabel">Password</label>
+                    <input type="password" id="authPassword" autocomplete="current-password" minlength="6" required>
+                </div>
+                <button type="submit" class="btn-primary" id="authSubmitBtn">Sign In</button>
+                <p class="form-switch">
+                    <span id="authSwitchText">New here?</span>
+                    <button type="button" class="btn-link" id="authSwitchBtn" onclick="toggleAuthMode()">Create an account</button>
+                </p>
+                <div class="auth-error" id="authError"></div>
+            </form>
+        </div>
+    </div>
+    <div class="app-shell" id="appShell" style="display: none;">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <div>
+                    <h1 id="brandTitle">WasteWise AI</h1>
+                    <p id="brandSubtitle">Smart Classification</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="nav-item active" href="#">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="navDashboard">Dashboard</span>
+                </a>
+                <a class="nav-item" href="#upload-section">
+                    <i class="fas fa-camera"></i>
+                    <span id="navClassify">Classify</span>
+                </a>
+                <a class="nav-item" href="#chat-widget-panel">
+                    <i class="fas fa-robot"></i>
+                    <span id="navRecycleBot">Recycle Bot</span>
+                </a>
+                <a class="nav-item" href="#resultsCard">
+                    <i class="fas fa-leaf"></i>
+                    <span id="navInsights">Insights</span>
+                </a>
+            </nav>
+            <div class="sidebar-note" id="sidebarNote">
+                Help the planet by properly classifying and recycling waste.
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="topbar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search waste types or recycling tips...">
+                </div>
+                <div class="top-actions">
+                    <button id="languageToggleBtn" class="icon-btn" onclick="toggleLanguage()" aria-label="Change language">हिंदी</button>
+                    <button class="icon-btn theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="logoutBtn" class="icon-btn logout-btn" onclick="logout()" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <section class="hero-panel">
+                <div>
+                    <h2 id="heroTitle">AI Waste Classification Dashboard</h2>
+                    <p id="heroDescription">Upload waste images for instant AI-powered classification and receive clear recycling guidance from your assistant.</p>
+                    <div class="hero-chips">
+                        <span id="heroChip1">Fast image classification</span>
+                        <span id="heroChip2">Recycle smarter</span>
+                        <span id="heroChip3">Waste category insights</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="metric-grid">
+                <article class="metric-card">
+                    <span class="metric-label" id="metricLabel1">Items Classified</span>
+                    <h3 id="metricValue1">247</h3>
+                    <p id="metricDesc1">Waste items analyzed this week.</p>
+                    <div class="metric-icon success"><i class="fas fa-recycle"></i></div>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label" id="metricLabel2">Recycling Rate</span>
+                    <h3 id="metricValue2">89%</h3>
+                    <p id="metricDesc2">Of classified items are recyclable.</p>
+                    <div class="metric-icon info"><i class="fas fa-chart-pie"></i></div>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label" id="metricLabel3">Waste Types</span>
+                    <h3 id="metricValue3">12</h3>
+                    <p id="metricDesc3">Different categories identified.</p>
+                    <div class="metric-icon neutral"><i class="fas fa-tags"></i></div>
+                </article>
+                <article class="metric-card">
+                    <span class="metric-label" id="metricLabel4">Eco Impact</span>
+                    <h3 id="metricValue4">156kg</h3>
+                    <p id="metricDesc4">CO2 emissions saved this month.</p>
+                    <div class="metric-icon warning"><i class="fas fa-leaf"></i></div>
+                </article>
+            </section>
+
+            <section class="workspace-panel">
+                <div class="panel upload-panel" id="upload-section">
+                    <div class="panel-heading">
+                        <div>
+                            <h3 id="classificationTitle">AI Waste Classification</h3>
+                            <p id="classificationDesc">Upload or capture waste images and get instant classification with recycling guidance.</p>
+                        </div>
+                        <span class="panel-badge" id="panelBadge">AI Powered</span>
+                    </div>
+
+                    <div class="upload-area-wrap">
+                        <div class="upload-area" id="uploadArea" tabindex="0" role="button" aria-label="Upload or drag and drop a waste image">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-camera-retro"></i>
+                                <h4 id="uploadPromptTitle">Upload waste image for classification</h4>
+                                <p id="uploadPromptDescription">Drop a photo of the material and let AI suggest the right recycling path.</p>
+                            </div>
+                            <input type="file" id="imageInput" accept="image/*" onchange="handleFileSelect(event)" aria-label="Upload waste image" hidden>
+                            <div class="upload-actions">
+                                <button type="button" class="btn-secondary" onclick="document.getElementById('imageInput').click()">
+                                    <i class="fas fa-folder-open"></i> Browse image
+                                </button>
+                                <span>or drag and drop here</span>
+                            </div>
+                        </div>
+                        <div class="upload-notice">
+                            <p id="uploadTip">Tip: Use a clear photo with one material type to improve classification accuracy.</p>
+                        </div>
+                        <div class="waste-tags">
+                            <span id="wasteTag1">Plastic</span>
+                            <span id="wasteTag2">Paper</span>
+                            <span id="wasteTag3">Metal</span>
+                            <span id="wasteTag4">Glass</span>
+                            <span id="wasteTag5">Organic</span>
+                            <span id="wasteTag6">Electronic</span>
+                        </div>
+                    </div>
+
+                    <div class="preview-section" id="previewSection" style="display: none;">
+                        <div class="preview-header">
+                            <h4 id="previewHeading">Preview</h4>
+                            <button id="changeButton" class="btn-secondary" onclick="clearImage()"><i class="fas fa-sync-alt"></i> Change</button>
+                        </div>
+                        <img id="preview" alt="Waste material preview">
+                        <button class="btn-primary analyze-btn" onclick="uploadImage()" id="analyzeBtn">
+                            <i class="fas fa-search"></i> Classify Waste
+                        </button>
+                    </div>
+
+                    <div class="results-card" id="resultsCard" style="display: none;">
+                        <div class="result-header">
+                            <h3 id="resultsHeading">Classification Results</h3>
+                        </div>
+                        <div class="result-grid">
+                            <div>
+                                <span class="label" id="labelWasteType">Waste Type</span>
+                                <strong id="result"></strong>
+                            </div>
+                            <div>
+                                <span class="label" id="labelConfidence">Confidence</span>
+                                <strong id="confidenceText"></strong>
+                            </div>
+                            <div>
+                                <span class="label" id="labelSuggestion">Suggestion</span>
+                                <p id="suggestion"></p>
+                            </div>
+                            <div>
+                                <span class="label" id="labelSource">Source</span>
+                                <p id="modelSource" class="model-source"></p>
+                            </div>
+                        </div>
+                        <div id="modelNotice" class="model-notice"></div>
+                        <div class="confidence-meter">
+                            <div class="confidence-track">
+                                <div class="confidence-fill" id="confidenceFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="panel insights-panel">
+                    <div class="panel-heading small">
+                        <div>
+                            <h3>Recycling Insights</h3>
+                            <p>Tips for better waste management.</p>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Did You Know?</h4>
+                        <p>Proper recycling can reduce landfill waste by up to 70% and save significant energy resources.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Best Practice</h4>
+                        <p>Clean and sort waste before disposal. Contaminated materials reduce recycling efficiency.</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>System Status</h4>
+                        <p>AI classification model is online with 94% accuracy. Chatbot ready to answer recycling questions.</p>
+                    </div>
+                </aside>
+            </section>
+        </main>
+    </div>
+
+    <div class="chat-widget">
+        <button class="chat-widget-toggle" onclick="toggleChatWidget()" aria-label="Open chat widget">
+            <i class="fas fa-comment-alt"></i>
+        </button>
+        <div class="chat-widget-panel" id="chat-widget-panel">
+            <div class="chat-widget-header">
+                <div>
+                    <h4 id="chatTitle">Recycle Assistant</h4>
+                    <p id="chatSubtitle">Ask me about recycling and waste management.</p>
+                </div>
+                <button class="close-btn" onclick="toggleChatWidget()" aria-label="Close chat widget"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-status" aria-live="polite">
+                <span><i class="fas fa-circle"></i> Assistant ready to help</span>
+            </div>
+            <div class="chat-messages" id="chatBox" aria-live="polite">
+                <div class="message ai-message">
+                    <div class="message-avatar"><i class="fas fa-robot"></i></div>
+                    <div class="message-content"><p id="assistantStartText">Hello! I'm your recycling assistant. Ask me about how to properly recycle different waste types, environmental impact, or waste management tips!</p></div>
+                </div>
+            </div>
+            <div class="chat-suggestions" id="chatSuggestions">
+                <button type="button" onclick="submitChatPrompt('How do I recycle plastic bottles?')">How do I recycle plastic?</button>
+                <button type="button" onclick="submitChatPrompt('What can I compost at home?')">What can I compost?</button>
+                <button type="button" onclick="submitChatPrompt('How should I dispose of electronics?')">Dispose electronics</button>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" placeholder="Type your question..." maxlength="500">
+                <button id="chatSendButton" class="btn-primary chat-send-btn" onclick="chat()"><i class="fas fa-paper-plane"></i> Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p id="loadingText">Classifying your waste...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

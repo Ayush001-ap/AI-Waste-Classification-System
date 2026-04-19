@@ -1,0 +1,35 @@
+{
+  "name": "ai-waste-project",
+  "version": "1.0.0",
+  "description": "WasteWise AI - Smart Waste Classification System with Recycling Chatbot",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "install:all": "npm install && cd ai-model && pip install -r requirements.txt"
+  },
+  "keywords": [
+    "ai",
+    "waste-classification",
+    "recycling",
+    "machine-learning",
+    "environment"
+  ],
+  "author": "WasteWise AI Team",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.15.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "form-data": "^4.0.5",
+    "multer": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

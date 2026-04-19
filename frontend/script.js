@@ -400,33 +400,77 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Drag and Drop Functionality
+    const uploadArea = document.getElementById('uploadArea');
+    if (uploadArea) {
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                // Create a synthetic event for the file input
+                const syntheticEvent = { target: { files: [file] } };
+                handleFileSelect(syntheticEvent);
+            }
+        });
+    }
 });
 
 // File Handling
 function handleFileSelect(event) {
+    console.log('handleFileSelect called');
     const file = event.target.files[0];
     if (file) {
+        console.log('File selected:', file.name);
         displayPreview(file);
+    } else {
+        console.warn('No file selected');
     }
 }
 
 function displayPreview(file) {
+    console.log('displayPreview called with file:', file.name, file.type, file.size);
+    
     if (!file.type.startsWith('image/')) {
+        console.warn('Invalid file type:', file.type);
         showNotification(translateMessage('invalidFile'), 'error');
         return;
     }
 
     if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        console.warn('File too large:', file.size);
         showNotification(translateMessage('fileTooLarge'), 'error');
         return;
     }
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        document.getElementById('preview').src = e.target.result;
-        document.getElementById('uploadArea').style.display = 'none';
-        document.getElementById('previewSection').style.display = 'block';
-        document.getElementById('resultsCard').style.display = 'none';
+        console.log('FileReader onload triggered');
+        const preview = document.getElementById('preview');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewSection = document.getElementById('previewSection');
+        const resultsCard = document.getElementById('resultsCard');
+        
+        if (preview) preview.src = e.target.result;
+        if (uploadArea) uploadArea.style.display = 'none';
+        if (previewSection) previewSection.style.display = 'block';
+        if (resultsCard) resultsCard.style.display = 'none';
+    };
+    reader.onerror = function(e) {
+        console.error('FileReader error:', e);
     };
     reader.readAsDataURL(file);
 }
@@ -437,32 +481,6 @@ function clearImage() {
     document.getElementById('previewSection').style.display = 'none';
     document.getElementById('resultsCard').style.display = 'none';
 }
-
-// Drag and Drop Functionality
-const uploadArea = document.getElementById('uploadArea');
-
-uploadArea.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    this.classList.add('drag-over');
-});
-
-uploadArea.addEventListener('dragleave', function(e) {
-    e.preventDefault();
-    this.classList.remove('drag-over');
-});
-
-uploadArea.addEventListener('drop', function(e) {
-    e.preventDefault();
-    this.classList.remove('drag-over');
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        const file = files[0];
-        // Create a synthetic event for the file input
-        const syntheticEvent = { target: { files: [file] } };
-        handleFileSelect(syntheticEvent);
-    }
-});
 
 // Image Upload and Analysis
 async function uploadImage() {

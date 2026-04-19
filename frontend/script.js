@@ -82,6 +82,15 @@ function toggleAuthMode() {
     }
 }
 
+const API_BASE_URL = (() => {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3000';
+    }
+    // Replace this with your deployed backend URL once your backend is hosted.
+    return 'https://your-backend-url.com';
+})();
+
 function submitAuthForm(event) {
     event.preventDefault();
     const email = document.getElementById('authEmail').value.trim().toLowerCase();
@@ -472,7 +481,7 @@ async function uploadImage() {
         const formData = new FormData();
         formData.append('image', file);
 
-        const response = await fetch('http://localhost:3000/predict', {
+        const response = await fetch(`${API_BASE_URL}/predict`, {
             method: 'POST',
             body: formData
         });
@@ -595,7 +604,7 @@ async function chat() {
     showTypingIndicator();
 
     try {
-        const response = await fetchWithTimeout('http://localhost:3000/chat', {
+        const response = await fetchWithTimeout(`${API_BASE_URL}/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

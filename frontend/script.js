@@ -382,9 +382,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const uploadAreaElement = document.getElementById('uploadArea');
+    const browseBtn = document.getElementById('browseBtn');
+    const imageInput = document.getElementById('imageInput');
+    
+    console.log('Button element:', browseBtn);
+    console.log('Input element:', imageInput);
+    
+    // Handle browse button click
+    if (browseBtn) {
+        browseBtn.addEventListener('click', function(e) {
+            console.log('Browse button clicked');
+            e.preventDefault();
+            if (imageInput) {
+                imageInput.click();
+                console.log('File input click triggered');
+            }
+        });
+    }
+    
     if (uploadAreaElement) {
         // Click on the upload area itself (not the button)
         uploadAreaElement.addEventListener('click', function(e) {
+            console.log('Upload area clicked');
             // Only trigger if the button wasn't clicked
             if (!e.target.closest('button')) {
                 const imageInput = document.getElementById('imageInput');

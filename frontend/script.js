@@ -382,33 +382,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const uploadAreaElement = document.getElementById('uploadArea');
-    const imageInput = document.getElementById('imageInput');
-    
-    if (uploadAreaElement && imageInput) {
-        // Make upload area clickable
+    if (uploadAreaElement) {
+        // Click on the upload area itself (not the button)
         uploadAreaElement.addEventListener('click', function(e) {
-            // Prevent triggering twice if button is clicked
-            if (e.target.closest('button')) {
-                imageInput.click();
-                return;
+            // Only trigger if the button wasn't clicked
+            if (!e.target.closest('button')) {
+                const imageInput = document.getElementById('imageInput');
+                if (imageInput) imageInput.click();
             }
-            imageInput.click();
         });
-        
-        // Also handle the browse button directly
-        const browseBtn = document.querySelector('.upload-actions button');
-        if (browseBtn) {
-            browseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                imageInput.click();
-            });
-        }
         
         uploadAreaElement.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                imageInput.click();
+                const imageInput = document.getElementById('imageInput');
+                if (imageInput) imageInput.click();
             }
         });
     }
